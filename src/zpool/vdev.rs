@@ -10,7 +10,7 @@
 //! use libzetta::zpool::CreateVdevRequest;
 //! use std::path::PathBuf;
 //!
-//! // Create an `Vec` with two disks
+//! // Create a `Vec` with two disks
 //! let drives = vec![PathBuf::from("nvd0p4.eli"), PathBuf::from("nvd1p4.eli")];
 //! let vdev = CreateVdevRequest::Mirror(drives);
 //! ```
@@ -49,8 +49,8 @@ impl Default for ErrorStatistics {
 
 /// Basic building block of vdev.
 ///
-/// It can be backed by a entire block device, a partition or a file. This particular structure
-/// represents backing of existing vdev. If disk is part of active zpool then it will also
+/// It can be backed by an entire block device, a partition or a file. This particular structure
+/// represents the backing of an existing vdev. If the disk is part of an active zpool it will also
 /// have error counts.
 #[derive(Debug, Clone, Getters, Eq, Builder)]
 #[builder(setter(into))]
@@ -126,7 +126,7 @@ impl FromStr for VdevType {
     }
 }
 
-/// Consumer friendly wrapper to configure vdev to zpol.
+/// Consumer friendly wrapper to configure vdev to zpool.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum CreateVdevRequest {
     /// The most basic type of vdev is a standard block device. This can be an
@@ -161,14 +161,13 @@ impl CreateVdevRequest {
 
     /// Check if given CreateVdevRequest is valid.
     ///
-    /// For SingleDisk it means that what ever it points to exists.
+    /// For SingleDisk it means that whatever it points to exists.
     ///
     /// For Mirror it checks that it's at least two valid disks.
     ///
     /// For RaidZ it checks that it's at least three valid disk. And so goes on.
     /// This gives false negative results in RAIDZ2 and RAIDZ3. This is
     /// intentional.
-    /// possible makes no sense.
     pub fn is_valid(&self) -> bool {
         match *self {
             CreateVdevRequest::SingleDisk(ref _disk) => true,
@@ -246,10 +245,10 @@ pub struct Vdev {
 }
 
 impl Vdev {
-    /// Create a builder - a referred way of creating Vdev structure.
+    /// Create a builder - the preferred way of creating Vdev structures.
     pub fn builder() -> VdevBuilder { VdevBuilder::default() }
 }
-/// Vdevs are equal of their type and backing disks are equal.
+/// Vdevs are equal based on their type and if backing disks are equal.
 impl PartialEq for Vdev {
     fn eq(&self, other: &Vdev) -> bool {
         self.kind() == other.kind() && self.disks() == other.disks()
