@@ -1,10 +1,10 @@
 //! Open3 implementation of [`ZpoolEngine`](trait.ZpoolEngine.html).
 //!
 //! Easy way - [`ZpoolOpen3::default()`](struct.ZpoolOpen3.html#impl-Default).
-//! It will look for `ZPOOL_CMD` in current
+//! It will look for `ZPOOL_CMD` in the current
 //! environment and fall back to `zpool` in `PATH`.
 //!
-//! Another way to specify is to use `ZpoolOpen3::new("/path/to/my/zpool")`.
+//! Another way to specify it is to use `ZpoolOpen3::new("/path/to/my/zpool")`.
 //!
 //! ### Usage
 //! ```rust,no_run
@@ -19,7 +19,7 @@
 //! assert!(engine.exists("z").unwrap());
 //! ```
 //!
-//! It's called [open3](https://docs.ruby-lang.org/en/2.0.0/Open3.html) because it opens `stdin`, `stdout`, `stderr`.
+//! It's called [open3](https://docs.ruby-lang.org/en/2.0.0/Open3.html) because it opens `stdin`, `stdout`, and `stderr`.
 
 use std::{env,
           ffi::{OsStr, OsString},
@@ -59,7 +59,7 @@ pub struct ZpoolOpen3 {
 
 impl Default for ZpoolOpen3 {
     /// Uses `log` crate as drain for `Slog`. Tries to use `ZPOOL_CMD` from environment if variable
-    /// is missing then it uses `zpool` from `$PATH`.
+    /// fs missing then it uses `zpool` from `$PATH`.
     fn default() -> ZpoolOpen3 {
         let cmd_name = match env::var_os("ZPOOL_CMD") {
             Some(val) => val,
@@ -79,7 +79,7 @@ impl ZpoolOpen3 {
         z
     }
 
-    /// Create new using supplies logger and default cmd.
+    /// Create new using supplied logger and default cmd.
     pub fn with_logger<L: Into<Logger>>(logger: L) -> ZpoolOpen3 {
         let mut z = ZpoolOpen3::default();
         z.logger = setup_logger(logger);
