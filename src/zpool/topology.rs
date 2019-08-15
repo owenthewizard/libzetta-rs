@@ -1,9 +1,9 @@
-//! Structure representing what zpool consist of. This structure is used in zpool creation and when
+//! Structure representing what zpool consists of. This structure is used in zpool creation and when
 //! new drives are attached.
 //!
 //! ### Examples
 //!
-//! Let's create simple topology: 2 drives in mirror, no l2arc, no zil.
+//! Let's create a simple topology: 2 drives in a mirror, no l2arc, no zil.
 //!
 //! ```rust
 //! use libzetta::zpool::{CreateVdevRequest, CreateZpoolRequest};
@@ -49,16 +49,16 @@ use crate::zpool::{properties::ZpoolPropertiesWrite, vdev::CreateVdevRequest, Cr
 pub struct CreateZpoolRequest {
     /// Name to give new zpool
     name: String,
-    /// Properties if new zpool
+    /// Properties of new zpool
     #[builder(default)]
     props: Option<ZpoolPropertiesWrite>,
-    /// Altroot for zpool
+    /// Alternate root for zpool
     #[builder(default)]
     altroot: Option<PathBuf>,
-    /// Mount mount point for zpool
+    /// Mount point for zpool
     #[builder(default)]
     mount: Option<PathBuf>,
-    /// Use `-f` or not;
+    /// Whether or not to use `-f`
     #[builder(default)]
     create_mode: CreateMode,
     /// Devices used to store data
@@ -79,7 +79,7 @@ pub struct CreateZpoolRequest {
     /// them
     #[builder(default)]
     logs: Vec<CreateVdevRequest>,
-    /// The hot spares feature enables you to identify disks that could be used to replace a failed
+    /// The hot spare feature enables you to identify disks that could be used to replace a failed
     /// or faulted device in one or more storage pools. Designating a device as a hot spare means
     /// that the device is not an active device in the pool, but if an active device in the pool
     /// fails, the hot spare automatically replaces the failed device.
@@ -88,10 +88,10 @@ pub struct CreateZpoolRequest {
 }
 
 impl CreateZpoolRequest {
-    /// A preferred way to create this.
+    /// The preferred way to create this.
     pub fn builder() -> CreateZpoolRequestBuilder { CreateZpoolRequestBuilder::default() }
 
-    /// Verify that given topology can be used to update existing pool.
+    /// Verify that the given topology can be used to update existing pool.
     pub fn is_suitable_for_update(&self) -> bool {
         let valid_vdevs = self.vdevs.iter().all(CreateVdevRequest::is_valid);
         if !valid_vdevs {
@@ -105,9 +105,9 @@ impl CreateZpoolRequest {
         true
     }
 
-    /// Verify that given topology can be used to create new zpool.
+    /// Verify that the given topology can be used to create a new zpool.
     ///
-    /// That means it as at least one valid vdev and all optional devices are
+    /// That means there is as at least one valid vdev and all optional devices are
     /// valid if present.
     pub fn is_suitable_for_create(&self) -> bool {
         if self.vdevs.is_empty() {
@@ -188,7 +188,7 @@ impl CreateZpoolRequestBuilder {
         self
     }
 
-    /// Add spare disk that will be used to replace failed device in zpool.
+    /// Add hot spare that will be used to replace failed device in zpool.
     ///
     /// * `disk` - path to file or name of block device in `/dev/`.
     pub fn spare(&mut self, disk: PathBuf) -> &mut CreateZpoolRequestBuilder {
