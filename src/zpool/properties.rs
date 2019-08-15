@@ -1,4 +1,4 @@
-//! Consumer friendly representation of Zpool's properties.
+compare/master...owenthewizard:grammar//! Consumer friendly representation of Zpool's properties.
 
 use std::{ffi::OsString, path::PathBuf};
 
@@ -29,7 +29,7 @@ impl PropPair for String {
     fn to_pair(&self, key: &str) -> String { format!("{}={}", key, &self) }
 }
 
-/// Represent state of zpool or vdev. Read
+/// Represents the state of a zpool or vdev. Read
 /// [more](https://docs.oracle.com/cd/E19253-01/819-5461/gamno/index.html).
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub enum Health {
@@ -199,7 +199,7 @@ pub struct ZpoolPropertiesWrite {
 }
 
 impl ZpoolPropertiesWrite {
-    /// A preferred way to create this structure.
+    /// The preferred way to create this structure.
     pub fn builder() -> ZpoolPropertiesWriteBuilder { ZpoolPropertiesWriteBuilder::default() }
 
     #[doc(hidden)]
@@ -219,7 +219,7 @@ impl ZpoolPropertiesWrite {
 }
 
 impl ZpoolPropertiesWriteBuilder {
-    /// Construct new builder given existing properties. Useful for updates.
+    /// Construct a new builder given existing properties. Useful for updates.
     pub fn from_props(props: &ZpoolProperties) -> ZpoolPropertiesWriteBuilder {
         let mut b = ZpoolPropertiesWriteBuilder::default();
         b.read_only(props.read_only);
